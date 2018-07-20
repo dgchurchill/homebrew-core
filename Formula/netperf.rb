@@ -14,7 +14,13 @@ class Netperf < Formula
   end
 
   def install
+    inreplace "src/netlib.c" do |s|
+      s.gsub! "inline void demo_interval_display(double actual_interval)", "void demo_interval_display(double actual_interval)"
+      s.gsub! "inline void demo_interval_tick(uint32_t units)", "void demo_interval_tick(uint32_t units)"
+    end
+
     system "./configure", "--disable-dependency-tracking",
+                          "--enable-demo",
                           "--prefix=#{prefix}"
     system "make", "install"
   end
